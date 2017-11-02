@@ -1,0 +1,19 @@
+{
+  "name": "assignment4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebastian-ch/assignment4.git"
+  },
+  "author": "Sebastian Hancock & Michael McNeil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sebastian-ch/assignment4/issues"
+  },
+  "homepage": "https://github.com/sebastian-ch/assignment4#readme"
+}
