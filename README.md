@@ -2,7 +2,7 @@
 ### Team: Sebastian Hancock & Michael McNeil
 
 #### Data & Data Source(s)
-* Text goes here
+* [City of Seattle Open Data Portal](https://data.seattle.gov/) -- mm
 
 #### Terminal Commands
 * npm init (to initialize npm to create package.json file) -- mm
@@ -16,3 +16,4 @@
 ##### 2017-11-03
 * Michael cloned repo to local machine. -- mm
 * Created a michael-edits branch to work off the master. Will email Sebastian so he knows he can work off the master branch. -- mm
+* Explored datasets available online and suggested Seattle for this assignment. -- mm
