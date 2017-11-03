@@ -25,7 +25,7 @@
 * Added Seattle thefts data to project-files directory. -- mm
 * Used framework of index.html from Part I of the assignment for this part of the assignment. -- mm
 
-merged michael-edits branch with master -- sh
-added libs folder --sh
-simplify/lower precision for thefts data and precincts --sh
-tried to be fancy and use build scripts to extract vividcolors (didn't upload vividcolors.json to see if it works for you) --sh
+* merged michael-edits branch with master -- sh
+* added libs folder --sh
+* simplify/lower precision for thefts data and precincts --sh
+* tried to be fancy and use build scripts to extract vividcolors (didn't upload vividcolors.json to see if it works for you) --sh
