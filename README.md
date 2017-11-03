@@ -3,7 +3,8 @@
 
 #### Data & Data Source(s)
 * [City of Seattle Open Data Portal](https://data.seattle.gov/) -- mm
-    * Seattle Police Precincts polygons
+    * Seattle Police Precincts (polygons)
+    * Seattle Thefts (points)
 * [King County GIS Open Data](https://gis-kingcounty.opendata.arcgis.com/) -- mm
 
 #### Terminal Commands
