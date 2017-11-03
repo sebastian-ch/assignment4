@@ -22,3 +22,4 @@
 * Explored datasets available online and suggested Seattle for this assignment. -- mm
 * Created a project-files directory. -- mm
 * Added Seattle Police Precincts data to project-files directory. -- mm
+* Added Seattle thefts data to project-files directory. -- mm
