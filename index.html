@@ -75,9 +75,9 @@
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
     }).addTo(map);
     $.when(
-      $.getJSON('project-files/seattle-precincts.geojson'),
-      $.getJSON('project-files/cartocolors.json'),
-      $.getJSON('project-files/seattle-thefts.geojson'
+      $.getJSON('data/seattle-precincts.json'),
+      $.getJSON('data/vividcolors.json'),
+      $.getJSON('data/seattle-thefts.json'
 
     )).done(function(precincts, colors, thefts) {
 
@@ -86,8 +86,12 @@
       thefts = thefts[0];
       //map.fitBounds(precincts.getBounds());
 
+      //adding to map just to test it out
       L.geoJson(precincts).addTo(map);
 
+
+
+        //commented out for testing
 
       // console.log(districts)
     /*  districts = districts[0];
