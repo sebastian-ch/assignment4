@@ -24,3 +24,5 @@
 * Added Seattle Police Precincts data to project-files directory. -- mm
 * Added Seattle thefts data to project-files directory. -- mm
 * Used framework of index.html from Part I of the assignment for this part of the assignment. -- mm
+
+merged michael-edits branch with master -- sh
