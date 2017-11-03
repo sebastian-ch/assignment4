@@ -15,3 +15,4 @@
 
 ##### 2017-11-03
 * Michael cloned repo to local machine. -- mm
+* Created a michael-edits branch to work off the master. Will email Sebastian so he knows he can work off the master branch. -- mm
