@@ -31,4 +31,4 @@
 * tried to be fancy and use build scripts to extract vividcolors (didn't upload vividcolors.json to see if it works for you) --sh
 
 ##### 2017-11-06
-* Michael created a new brach (michael-edits-20171106). -- mm
+* Michael created a new branch (michael-edits-20171106). -- mm
