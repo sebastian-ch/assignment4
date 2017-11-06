@@ -9,8 +9,8 @@
 
 #### Terminal Commands
 * npm init (to initialize npm to create package.json file) -- sh
-* npm install
-* npm start
+* npm install -- mm
+* npm start -- mm
 
 #### Build Notes
 
