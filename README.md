@@ -34,3 +34,6 @@
 
 ##### 2017-11-06
 * Michael created a new branch (michael-edits-20171106). -- mm
+
+##### 2017-11-07
+* Michael created a new branch (michael-edits-20171107). -- mm
