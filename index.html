@@ -91,14 +91,14 @@
             // L.geoJson(precincts).addTo(map); // commented out now to style the polygons with the layer group below
             var precinctsLayerGroup = L.geoJson(precincts, {
                 style: function (feature) {
-                    // use the colors object to style
-                    // each polygon a unique color aka qualitative
+                    // use the colors object to style each polygon a unique color aka qualitative
                     return {
                         color: colors.Vivid[5][feature.properties.name - 1]
                         , fillOpacity: .6
                     }
                 }
                 , onEachFeature(feature, layer) {
+                    // create mouseover and mouseout effects to enable visual affordance on the map
                     $('#precinct-' + feature.properties.name + ' span').append(feature.properties.count);
                     layer.on('mouseover', function () {
                         this.setStyle({
@@ -112,27 +112,22 @@
                         });
                         $('#precinct-' + feature.properties.name).removeClass('highlight');
                     });
-                    // select all the list items and on mouseover
+                    // create visual affordance on legend items when mouseover, and then also lend visual affordance to the corresponding precinct feature on the map
                     $('.legend-item').on('mouseover', function () {
-                        // extract the specific number from the specific item
-                        // being moused over
                         var num = this.id.replace('precinct-', '');
-                        // send this number as an argument to the highlightDistrict function
                         highlightPrecinct(num);
                     });
-
+                    // write function that receives info from user in terms of the mouseover on legend and then highlights the appropriate polygon feature
                     function highlightPrecinct(precinctNum) {
-                        // loop through the districts polygons
                         precinctsLayerGroup.eachLayer(function (layer) {
-                            // if the precinct id matches the one we're mousing over
                             if (layer.feature.properties.name === precinctNum) {
-                                // change the layer style
+                                // sets style when it finds a match                                
                                 layer.setStyle({
                                     fillOpacity: .8
                                 }).bringToFront();
                             }
                             else {
-                                // return to original
+                                // returns default style
                                 layer.setStyle({
                                     fillOpacity: .6
                                 });
