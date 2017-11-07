@@ -81,7 +81,7 @@
             console.log(precincts);
             //map.fitBounds(precincts.getBounds());
             //adding to map just to test it out
-            // L.geoJson(precincts).addTo(map); // commented out now to style the polygons below
+            // L.geoJson(precincts).addTo(map); // commented out now to style the polygons with the layer group below
             var precinctsLayerGroup = L.geoJson(precincts, {
                 style: function (feature) {
                     // use the colors object to style
