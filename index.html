@@ -98,6 +98,21 @@
                         , fillOpacity: .6
                     }
                 }
+                , onEachFeature(feature, layer) {
+                    $('#precinct-' + feature.properties.name + ' span').append(feature.properties.count);
+                    layer.on('mouseover', function () {
+                        this.setStyle({
+                            fillOpacity: .8
+                        });
+                        $('#precinct-' + feature.properties.name).addClass('highlight');
+                    });
+                    layer.on('mouseout', function () {
+                        this.setStyle({
+                            fillOpacity: .6
+                        });
+                        $('#precinct-' + feature.properties.name).removeClass('highlight');
+                    });
+                }
             }).addTo(map);
         });
     </script>
