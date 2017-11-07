@@ -2,178 +2,105 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Seattle Crime</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
-  <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.Default.css"> />
-  <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.css"> />
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    #map {
-      position: absolute;
-      width: 100%;
-      top: 0;
-      bottom: 0;
-    }
-
-    #ui {
-      position: absolute;
-      z-index: 1000;
-      /* place above map */
-      bottom: 18px;
-      right: 18px;
-      padding: 6px 12px;
-      background: rgba(256, 256, 256, .9);
-    }
-
-    #ui ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    #ui li {
-      margin-bottom: 6px;
-    }
-
-    #ui a {
-      text-decoration: none;
-    }
-
-    #ui a:hover {
-      font-weight: bold;
-    }
-
-    .highlight {
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="utf-8">
+    <title>Seattle Crime</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.Default.css"> />
+    <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.css"> />
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #map {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            bottom: 0;
+        }
+        
+        #ui {
+            position: absolute;
+            z-index: 1000;
+            /* place above map */
+            bottom: 18px;
+            right: 18px;
+            padding: 6px 12px;
+            background: rgba(256, 256, 256, .9);
+        }
+        
+        #ui ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        #ui li {
+            margin-bottom: 6px;
+        }
+        
+        #ui a {
+            text-decoration: none;
+        }
+        
+        #ui a:hover {
+            font-weight: bold;
+        }
+        
+        .highlight {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
-  <div id="map"></div>
-  <div id="ui">
-    <h3>Seattle Crime By Precinct</h3>
-    <h4>(number of thefts)</h4>
-    <ul id="legend-list"></ul>
-  </div>
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-  <script src="libs/Leaflet.markercluster/leaflet.markercluster.js"></script>
-  <script>
-    var options = {
-      center: [47.61218, -122.31697],
-      zoom: 11
-    }
-    var map = L.map('map', options);
-    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
-    }).addTo(map);
-    $.when(
-      $.getJSON('data/seattle-precincts.json'),
-      $.getJSON('data/vividcolors.json'),
-      $.getJSON('data/seattle-thefts.json'
-
-    )).done(function(precincts, colors, thefts) {
-
-
-      precincts = precincts[0];
-      thefts = thefts[0];
-      //map.fitBounds(precincts.getBounds());
-
-      //adding to map just to test it out
-      L.geoJson(precincts).addTo(map);
-
-
-
-        //commented out for testing
-
-      // console.log(districts)
-    /*  districts = districts[0];
-      colors = colors[0];
-      signals = signals[0];
-      console.log(districts) // below the arrayed districts, so now it's just referencing the geojson in districts
-      // L.geoJson(districts).addTo(map); // adds geojson data to the map; commented out because added again below when coloring the council districts
-      // create a layerGroup with the GeoJson data
-      // store a reference to the HTML list
-      var legendList = $('#legend-list');
-      // loop through the features and create a new list item for each feature in the legend
-      for (var i = 1; i <= districts.features.length; i++) {
-        legendList.append('<li class="legend-item" id="district-' + i + '"><a style="color:' + colors.Vivid[10][i - 1] + '" href="#">District ' + i + ' (<span></span>)</a></li>');
-      }
-      var districtsLayerGroup = L.geoJson(districts, {
-        style: function(feature) {
-          // use the colors object to style
-          // each polygon a unique color aka qualitative
-          return {
-            color: colors.Vivid[10][feature.properties.council_di - 1],
-            fillOpacity: .6
-          }
-        },
-        onEachFeature(feature, layer) {
-          $('#district-' + feature.properties.council_di + ' span').append(feature.properties.count);
-          layer.on('mouseover', function() {
-            this.setStyle({
-              fillOpacity: .8
-            });
-            $('#district-' + feature.properties.council_di).addClass('highlight');
-          });
-          layer.on('mouseout', function() {
-            this.setStyle({
-              fillOpacity: .6
-            });
-            $('#district-' + feature.properties.council_di).removeClass('highlight');
-          });
-          // select all the list items and on mouseover
-          $('.legend-item').on('mouseover', function() {
-            // extract the specific number from the specific item
-            // being moused over
-            var num = this.id.replace('district-', '');
-            // send this number as an argument to the highlightDistrict function
-            highlightDistrict(num);
-          });
-
-          function highlightDistrict(districtNum) {
-            // loop through the districts polygons
-            districtsLayerGroup.eachLayer(function(layer) {
-              // if the district id matches the one we're mousing over
-              if (layer.feature.properties.council_di === districtNum) {
-                // change the layer style
-                layer.setStyle({
-                  fillOpacity: .8
-                }).bringToFront();
-              } else {
-                // return to original
-                layer.setStyle({
-                  fillOpacity: .6
-                });
-              }
-            });
-          }
+    <div id="map"></div>
+    <div id="ui">
+        <h3>Seattle Crime By Precinct</h3>
+        <h4>(number of thefts)</h4>
+        <ul id="legend-list"></ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="libs/Leaflet.markercluster/leaflet.markercluster.js"></script>
+    <script>
+        var options = {
+            center: [47.61218, -122.31697]
+            , zoom: 11
         }
-      }).addTo(map);
-      // L.geoJson(signals).addTo(map); // add traffic signal points to map
-      // create new markerClusterGroup
-      var markers = L.markerClusterGroup();
-      // loop through all our signals features
-      signals.features.forEach(function(feature) {
-        // create a new Leaflet marker for each
-        var coords = feature.geometry.coordinates,
-          marker = L.marker([coords[1], coords[0]]);
-        // bind a tooltip to the marker
-        marker.bindTooltip("Signal ID: " + feature.properties.SIGNAL_ID);
-        // add the marker to the markerClusterGroup
-        markers.addLayer(marker);
-      });
-      // add the markerClusterGroup to the map
-      map.addLayer(markers); */
-    });
-  </script>
+        var map = L.map('map', options);
+        L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+            maxZoom: 18
+            , attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
+        }).addTo(map);
+        $.when($.getJSON('data/seattle-precincts.json'), $.getJSON('data/vividcolors.json'), $.getJSON('data/seattle-thefts.json')).done(function (precincts, colors, thefts) {
+            precincts = precincts[0];
+            colors = colors[0];
+            thefts = thefts[0];
+            console.log(precincts);
+            // store a reference to the HTML list
+            var legendList = $('#legend-list');
+            // loop through the features and create a new
+            // list item for each feature in the legend
+            for (var i = 1; i <= precincts.features.length; i++) {
+                legendList.append('<li class="legend-item" id="precinct-' + i + '"><a style="color:' + colors.Vivid[5][i - 1] + '" href="#">Precinct ' + i + ' (<span></span>)</a></li>');
+            }
+            //map.fitBounds(precincts.getBounds());
+            //adding to map just to test it out
+            // L.geoJson(precincts).addTo(map); // commented out now to style the polygons with the layer group below
+            var precinctsLayerGroup = L.geoJson(precincts, {
+                style: function (feature) {
+                    // use the colors object to style
+                    // each polygon a unique color aka qualitative
+                    return {
+                        color: colors.Vivid[5][feature.properties.name - 1]
+                        , fillOpacity: .6
+                    }
+                }
+            }).addTo(map);
+        });
+    </script>
 </body>
 
 </html>
