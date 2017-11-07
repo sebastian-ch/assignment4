@@ -112,6 +112,33 @@
                         });
                         $('#precinct-' + feature.properties.name).removeClass('highlight');
                     });
+                    // select all the list items and on mouseover
+                    $('.legend-item').on('mouseover', function () {
+                        // extract the specific number from the specific item
+                        // being moused over
+                        var num = this.id.replace('precinct-', '');
+                        // send this number as an argument to the highlightDistrict function
+                        highlightPrecinct(num);
+                    });
+
+                    function highlightPrecinct(precinctNum) {
+                        // loop through the districts polygons
+                        precinctsLayerGroup.eachLayer(function (layer) {
+                            // if the precinct id matches the one we're mousing over
+                            if (layer.feature.properties.name === precinctNum) {
+                                // change the layer style
+                                layer.setStyle({
+                                    fillOpacity: .8
+                                }).bringToFront();
+                            }
+                            else {
+                                // return to original
+                                layer.setStyle({
+                                    fillOpacity: .6
+                                });
+                            }
+                        });
+                    }
                 }
             }).addTo(map);
         });
