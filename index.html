@@ -81,8 +81,7 @@
             console.log(precincts);
             // store a reference to the HTML list
             var legendList = $('#legend-list');
-            // loop through the features and create a new
-            // list item for each feature in the legend
+            // loop through the features and create a new list item for each feature in the legend
             for (var i = 1; i <= precincts.features.length; i++) {
                 legendList.append('<li class="legend-item" id="precinct-' + i + '"><a style="color:' + colors.Vivid[5][i - 1] + '" href="#">Precinct ' + i + ' (<span></span>)</a></li>');
             }
@@ -91,11 +90,48 @@
             // L.geoJson(precincts).addTo(map); // commented out now to style the polygons with the layer group below
             var precinctsLayerGroup = L.geoJson(precincts, {
                 style: function (feature) {
-                    // use the colors object to style
-                    // each polygon a unique color aka qualitative
+                    // use the colors object to style each polygon a unique color aka qualitative
                     return {
                         color: colors.Vivid[5][feature.properties.name - 1]
                         , fillOpacity: .6
+                    }
+                }
+                , onEachFeature(feature, layer) {
+                    // create mouseover and mouseout effects to enable visual affordance on the map
+                    $('#precinct-' + feature.properties.name + ' span').append(feature.properties.count);
+                    layer.on('mouseover', function () {
+                        this.setStyle({
+                            fillOpacity: .8
+                        });
+                        $('#precinct-' + feature.properties.name).addClass('highlight');
+                    });
+                    layer.on('mouseout', function () {
+                        this.setStyle({
+                            fillOpacity: .6
+                        });
+                        $('#precinct-' + feature.properties.name).removeClass('highlight');
+                    });
+                    // create visual affordance on legend items when mouseover, and then also lend visual affordance to the corresponding precinct feature on the map
+                    $('.legend-item').on('mouseover', function () {
+                        var num = this.id.replace('precinct-', '');
+                        highlightPrecinct(num);
+                    });
+                    // write function that receives info from user in terms of the mouseover on legend and then highlights the appropriate polygon feature
+                    function highlightPrecinct(precinctNum) {
+                        precinctsLayerGroup.eachLayer(function (layer) {
+                            if (layer.feature.properties.name === precinctNum) {
+                                // sets style when it finds a match                                
+                                layer.setStyle({
+                                    fillOpacity: .8
+                                }).bringToFront();
+                            }
+                            else {
+                                // returns default style
+                                layer.setStyle({
+                                    fillOpacity: .6
+                                });
+                            }
+                        });
                     }
                 }
             }).addTo(map);
