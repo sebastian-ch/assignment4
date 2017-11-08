@@ -135,8 +135,22 @@
                     }
                 }
             }).addTo(map);
-            // add point data to map
-            L.geoJson(thefts).addTo(map);
+            // add point data to map to test
+            // L.geoJson(thefts).addTo(map);
+            // create new marker cluster group
+            var markers = L.markerClusterGroup();
+            // loop through all our theft features
+            thefts.features.forEach(function (feature) {
+                // create a new Leaflet marker for each
+                var coords = feature.geometry.coordinates
+                    , marker = L.marker([coords[1], coords[0]]);
+                // bind a tooltip to the marker
+                marker.bindTooltip("Event: " + feature.properties.EVENT);
+                // add the marker to the marker cluster group
+                markers.addLayer(marker);
+            });
+            // add the markerClusterGroup to the map
+            map.addLayer(markers)
         });
     </script>
 </body>
