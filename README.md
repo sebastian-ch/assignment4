@@ -45,3 +45,4 @@
 
 ##### 2017-11-08
 * Michael created a new branch (michael-edits-20171108). -- mm
+* Filtered the point data by EVENT = BICYCLE THEFT to improve page load time. Cut number of points down to ~4,000. -- mm
