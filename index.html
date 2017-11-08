@@ -74,7 +74,7 @@
             maxZoom: 18
             , attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
         }).addTo(map);
-        $.when($.getJSON('data/seattle-precincts.json'), $.getJSON('data/vividcolors.json'), $.getJSON('data/seattle-thefts.json')).done(function (precincts, colors, thefts) {
+        $.when($.getJSON('data/seattle-precincts.json'), $.getJSON('data/vividcolors.json'), $.getJSON('data/bicycle-thefts.json')).done(function (precincts, colors, thefts) {
             precincts = precincts[0];
             colors = colors[0];
             thefts = thefts[0];
@@ -136,7 +136,7 @@
                 }
             }).addTo(map);
             // add point data to map
-            // L.geoJson(thefts).addTo(map);
+            L.geoJson(thefts).addTo(map);
         });
     </script>
 </body>
