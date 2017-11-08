@@ -49,3 +49,4 @@
 * After adding the marker cluster group, the page loads much faster! -- mm
 * Merging branch into master now that most major things are complete. -- mm
 * Added metadata. -- mm
+*Removed vividecolors from .gitignore -- sh
