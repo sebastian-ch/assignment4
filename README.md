@@ -42,3 +42,6 @@
 * Troubleshot some data issues that were preventing the polygons from coloring correctly. Solved by manipulating the data into a numeric format. -- mm
 * Used QGIS to do points-in-polygons analysis and assigned those numbers to a "count" field in the precinct polygon features. -- mm
 * Used QGIS to delete point features outside polygon extents (used "select by location" tool). -- mm
+
+##### 2017-11-08
+* Michael created a new branch (michael-edits-20171108). -- mm
