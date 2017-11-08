@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Seattle Crime</title>
+    <title>Seattle Bike Crime</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
     <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.Default.css"> />
     <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.css"> />
@@ -58,7 +58,7 @@
     <div id="map"></div>
     <div id="ui">
         <h3>Seattle Crime By Precinct</h3>
-        <h4>(number of thefts)</h4>
+        <h4>(number of bicycle thefts)</h4>
         <ul id="legend-list"></ul>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -74,7 +74,7 @@
             maxZoom: 18
             , attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
         }).addTo(map);
-        $.when($.getJSON('data/seattle-precincts.json'), $.getJSON('data/vividcolors.json'), $.getJSON('data/seattle-thefts.json')).done(function (precincts, colors, thefts) {
+        $.when($.getJSON('data/seattle-precincts.json'), $.getJSON('data/vividcolors.json'), $.getJSON('data/bicycle-thefts.json')).done(function (precincts, colors, thefts) {
             precincts = precincts[0];
             colors = colors[0];
             thefts = thefts[0];
@@ -135,6 +135,22 @@
                     }
                 }
             }).addTo(map);
+            // add point data to map to test
+            // L.geoJson(thefts).addTo(map);
+            // create new marker cluster group
+            var markers = L.markerClusterGroup();
+            // loop through all our theft features
+            thefts.features.forEach(function (feature) {
+                // create a new Leaflet marker for each
+                var coords = feature.geometry.coordinates
+                    , marker = L.marker([coords[1], coords[0]]);
+                // bind a tooltip to the marker
+                marker.bindTooltip("Event: " + feature.properties.EVENT);
+                // add the marker to the marker cluster group
+                markers.addLayer(marker);
+            });
+            // add the markerClusterGroup to the map
+            map.addLayer(markers)
         });
     </script>
 </body>

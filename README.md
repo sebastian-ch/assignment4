@@ -42,3 +42,9 @@
 * Troubleshot some data issues that were preventing the polygons from coloring correctly. Solved by manipulating the data into a numeric format. -- mm
 * Used QGIS to do points-in-polygons analysis and assigned those numbers to a "count" field in the precinct polygon features. -- mm
 * Used QGIS to delete point features outside polygon extents (used "select by location" tool). -- mm
+
+##### 2017-11-08
+* Michael created a new branch (michael-edits-20171108). -- mm
+* Filtered the point data by EVENT = BICYCLE THEFT to improve page load time. Cut number of points down to ~4,000. -- mm
+* After adding the marker cluster group, the page loads much faster! -- mm
+* Merging branch into master now that most major things are complete. -- mm
