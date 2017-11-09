@@ -50,6 +50,3 @@
 * Merging branch into master now that most major things are complete. -- mm
 * Added metadata. -- mm
 * Removed vividecolors from .gitignore -- sh
-* styled legend headers, removed h4 as it was unnecessary -- sh
-* changed title of legend -- sh
-* added whitespace to code -- sh
