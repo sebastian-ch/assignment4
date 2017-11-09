@@ -2,164 +2,183 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Seattle Bike Crime</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
-    <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.Default.css"> />
-    <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.css"> />
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        
-        #map {
-            position: absolute;
-            width: 100%;
-            top: 0;
-            bottom: 0;
-        }
-        
-        #ui {
-            position: absolute;
-            z-index: 1000;
-            /* place above map */
-            bottom: 18px;
-            right: 18px;
-            padding: 6px 12px;
-            background: rgba(256, 256, 256, .9);
-        }
-        
-        #ui ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        
-        #ui li {
-            margin-bottom: 6px;
-        }
-        
-        #ui a {
-            text-decoration: none;
-        }
-        
-        #ui a:hover {
-            font-weight: bold;
-        }
-        
-        .highlight {
-            font-weight: bold;
-        }
-        
-        h5 {
-            font-size: 0.7em;
-            font-style: italic
-        }
-    </style>
+  <meta charset="utf-8">
+  <title>Seattle Bike Crime</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+  <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.Default.css"> />
+  <link rel="stylesheet" href="libs/Leaflet.markercluster/MarkerCluster.css"> />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      bottom: 0;
+    }
+
+    #ui {
+      position: absolute;
+      z-index: 1000;
+      /* place above map */
+      bottom: 18px;
+      right: 18px;
+      padding: 6px 12px;
+      background: rgba(256, 256, 256, .9);
+    }
+
+    #ui ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #ui li {
+      margin-bottom: 6px;
+    }
+
+    #ui a {
+      text-decoration: none;
+    }
+
+    #ui a:hover {
+      font-weight: bold;
+    }
+    #ui h3 {
+      margin-bottom: 0;
+    }
+    #ui h4 {
+      margin-top: 0;
+    }
+
+    .highlight {
+      font-weight: bold;
+    }
+
+    h5 {
+      font-size: 0.7em;
+      font-style: italic
+    }
+  </style>
 </head>
 
 <body>
-    <div id="map"></div>
-    <div id="ui">
-        <h3>Seattle Crime By Precinct</h3>
-        <h4>(number of bicycle thefts)</h4>
-        <ul id="legend-list"></ul>
-        <h5>Data Source: <a href="https://data.seattle.gov/" target="_blank">City of Seattle</a>
+  <div id="map"></div>
+  <div id="ui">
+
+    <h3>Seattle Bike Thefts By Precinct</h3>
+    <!--<h4>(number of bicycle thefts)</h4> -->
+    <ul id="legend-list"></ul>
+    <h5>Data Source: <a href="https://data.seattle.gov/" target="_blank">City of Seattle</a>
         <br>
         Map Design: Sebastian Hancock & Michael McNeil</h5> </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-    <script src="libs/Leaflet.markercluster/leaflet.markercluster.js"></script>
-    <script>
-        var options = {
-            center: [47.61218, -122.31697]
-            , zoom: 11
-        }
-        var map = L.map('map', options);
-        L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
-            maxZoom: 18
-            , attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
-        }).addTo(map);
-        $.when($.getJSON('data/seattle-precincts.json'), $.getJSON('data/vividcolors.json'), $.getJSON('data/bicycle-thefts.json')).done(function (precincts, colors, thefts) {
-            precincts = precincts[0];
-            colors = colors[0];
-            thefts = thefts[0];
-            console.log(precincts);
-            // store a reference to the HTML list
-            var legendList = $('#legend-list');
-            // loop through the features and create a new list item for each feature in the legend
-            for (var i = 1; i <= precincts.features.length; i++) {
-                legendList.append('<li class="legend-item" id="precinct-' + i + '"><a style="color:' + colors.Vivid[5][i - 1] + '" href="#">Precinct ' + i + ' (<span></span>)</a></li>');
-            }
-            //map.fitBounds(precincts.getBounds());
-            //adding to map just to test it out
-            // L.geoJson(precincts).addTo(map); // commented out now to style the polygons with the layer group below
-            var precinctsLayerGroup = L.geoJson(precincts, {
-                style: function (feature) {
-                    // use the colors object to style each polygon a unique color aka qualitative
-                    return {
-                        color: colors.Vivid[5][feature.properties.name - 1]
-                        , fillOpacity: .6
-                    }
-                }
-                , onEachFeature(feature, layer) {
-                    // create mouseover and mouseout effects to enable visual affordance on the map
-                    $('#precinct-' + feature.properties.name + ' span').append(feature.properties.count);
-                    layer.on('mouseover', function () {
-                        this.setStyle({
-                            fillOpacity: .8
-                        });
-                        $('#precinct-' + feature.properties.name).addClass('highlight');
-                    });
-                    layer.on('mouseout', function () {
-                        this.setStyle({
-                            fillOpacity: .6
-                        });
-                        $('#precinct-' + feature.properties.name).removeClass('highlight');
-                    });
-                    // create visual affordance on legend items when mouseover, and then also lend visual affordance to the corresponding precinct feature on the map
-                    $('.legend-item').on('mouseover', function () {
-                        var num = this.id.replace('precinct-', '');
-                        highlightPrecinct(num);
-                    });
-                    // write function that receives info from user in terms of the mouseover on legend and then highlights the appropriate polygon feature
-                    function highlightPrecinct(precinctNum) {
-                        precinctsLayerGroup.eachLayer(function (layer) {
-                            if (layer.feature.properties.name === precinctNum) {
-                                // sets style when it finds a match                                
-                                layer.setStyle({
-                                    fillOpacity: .8
-                                }).bringToFront();
-                            }
-                            else {
-                                // returns default style
-                                layer.setStyle({
-                                    fillOpacity: .6
-                                });
-                            }
-                        });
-                    }
-                }
-            }).addTo(map);
-            // add point data to map to test
-            // L.geoJson(thefts).addTo(map);
-            // create new marker cluster group
-            var markers = L.markerClusterGroup();
-            // loop through all our theft features
-            thefts.features.forEach(function (feature) {
-                // create a new Leaflet marker for each
-                var coords = feature.geometry.coordinates
-                    , marker = L.marker([coords[1], coords[0]]);
-                // bind a tooltip to the marker
-                marker.bindTooltip("Event: " + feature.properties.EVENT);
-                // add the marker to the marker cluster group
-                markers.addLayer(marker);
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+  <script src="libs/Leaflet.markercluster/leaflet.markercluster.js"></script>
+  <script>
+    var options = {
+      center: [47.61218, -122.31697],
+      zoom: 11,
+      maxBounds: [
+        [47.77348, -121.99081],
+        []
+      ]
+    }
+    var map = L.map('map', options);
+
+    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
+    }).addTo(map);
+
+    $.when(
+      $.getJSON('data/seattle-precincts.json'),
+      $.getJSON('data/vividcolors.json'),
+      $.getJSON('data/bicycle-thefts.json')
+    ).done(function(precincts, colors, thefts) {
+
+      precincts = precincts[0];
+      colors = colors[0];
+      thefts = thefts[0];
+      console.log(precincts);
+      // store a reference to the HTML list
+      var legendList = $('#legend-list');
+      // loop through the features and create a new list item for each feature in the legend
+      for (var i = 1; i <= precincts.features.length; i++) {
+        legendList.append('<li class="legend-item" id="precinct-' + i + '"><a style="color:' + colors.Vivid[5][i - 1] + '" href="#">Precinct ' + i + ' (<span></span>)</a></li>');
+      }
+
+      var precinctsLayerGroup = L.geoJson(precincts, {
+        style: function(feature) {
+          // use the colors object to style each polygon a unique color aka qualitative
+          return {
+            color: colors.Vivid[5][feature.properties.name - 1],
+            fillOpacity: .6
+          }
+        },
+        onEachFeature(feature, layer) {
+          // create mouseover and mouseout effects to enable visual affordance on the map
+          $('#precinct-' + feature.properties.name + ' span').append(feature.properties.count);
+          layer.on('mouseover', function() {
+            this.setStyle({
+              fillOpacity: .8
             });
-            // add the markerClusterGroup to the map
-            map.addLayer(markers)
-        });
-    </script>
+
+            $('#precinct-' + feature.properties.name).addClass('highlight');
+          });
+
+          layer.on('mouseout', function() {
+            this.setStyle({
+              fillOpacity: .6
+            });
+            $('#precinct-' + feature.properties.name).removeClass('highlight');
+          });
+          // create visual affordance on legend items when mouseover, and then also lend visual affordance to the corresponding precinct feature on the map
+          $('.legend-item').on('mouseover', function() {
+            var num = this.id.replace('precinct-', '');
+            highlightPrecinct(num);
+          });
+          // write function that receives info from user in terms of the mouseover on legend and then highlights the appropriate polygon feature
+          function highlightPrecinct(precinctNum) {
+            precinctsLayerGroup.eachLayer(function(layer) {
+
+              if (layer.feature.properties.name === precinctNum) {
+                // sets style when it finds a match
+                layer.setStyle({
+                  fillOpacity: .8
+                }).bringToFront();
+              } else {
+                // returns default style
+                layer.setStyle({
+                  fillOpacity: .6
+                });
+              }
+            });
+          }
+        }
+      }).addTo(map);
+      // add point data to map to test
+      // L.geoJson(thefts).addTo(map);
+      // create new marker cluster group
+      var markers = L.markerClusterGroup();
+      // loop through all our theft features
+      thefts.features.forEach(function(feature) {
+        // create a new Leaflet marker for each
+        var coords = feature.geometry.coordinates,
+          marker = L.marker([coords[1], coords[0]]);
+        // bind a tooltip to the marker
+        marker.bindTooltip("Event: " + feature.properties.EVENT);
+        // add the marker to the marker cluster group
+        markers.addLayer(marker);
+      });
+      // add the markerClusterGroup to the map
+      map.addLayer(markers)
+    });
+  </script>
 </body>
 
 </html>
