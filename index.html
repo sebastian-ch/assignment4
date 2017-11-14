@@ -41,11 +41,12 @@
     }
 
     #ui a {
+      color: steelblue;
       text-decoration: none;
     }
 
     #ui a:hover {
-      font-weight: bold;
+      text-decoration: underline;
     }
     #ui h3 {
       margin-bottom: 0;
@@ -53,14 +54,12 @@
     #ui h4 {
       margin-top: 0;
     }
-
     .highlight {
       font-weight: bold;
     }
-
-    h5 {
-      font-size: 0.7em;
-      font-style: italic
+    #ui p {
+      font-size: 0.8em;
+      margin: 3px auto;
     }
   </style>
 </head>
@@ -68,13 +67,12 @@
 <body>
   <div id="map"></div>
   <div id="ui">
-
     <h3>Seattle Bike Crime By Precinct</h3>
     <!--<h4>(number of bicycle thefts)</h4> -->
     <ul id="legend-list"></ul>
-    <h5>Data Source: <a href="https://data.seattle.gov/" target="_blank">City of Seattle</a>
-        <br>
-        Map Design: Sebastian Hancock & Michael McNeil</h5> </div>
+    <p>Data Source: <a href="https://data.seattle.gov/" target="_blank">City of Seattle</a></p>
+    <p>Map Design: Sebastian Hancock &amp; Michael McNeil</p> 
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
