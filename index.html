@@ -157,6 +157,19 @@
           }
         }
       }).addTo(map);
+
+      // select all legend items and zoom to layer when clicked
+      $('.legend-item').on('click', function() {
+        var layerId = this.id;
+        precinctsLayerGroup.eachLayer(function(layer) {
+          console.log(layer.feature.properties.name, layerId)
+          if('precinct-' + layer.feature.properties.name === layerId) {
+            map.flyToBounds(layer.getBounds());
+          }
+        });
+      });
+
+
       // add point data to map to test
       // L.geoJson(thefts).addTo(map);
       // create new marker cluster group
